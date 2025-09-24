@@ -13,6 +13,7 @@ export interface OnOffConfig {
   isOn?: ValueGetter<boolean>;
   turnOn?: ValueSetter<void> | null;
   turnOff?: ValueSetter<void> | null;
+  turnOnDelayInMs?: ValueSetter<void> | null;
 }
 
 const FeaturedBase = Base.with("Lighting");
@@ -50,6 +51,7 @@ class OnOffServerBase extends FeaturedBase {
     const homeAssistant = this.agent.get(HomeAssistantEntityBehavior);
     homeAssistant.callAction(
       turnOn?.(void 0, this.agent) ?? { action: "homeassistant.turn_on" },
+      turnOnDelayInMs?.(void 0, this.agent) ?? 0,
     );
   }
 
@@ -62,6 +64,7 @@ class OnOffServerBase extends FeaturedBase {
     const homeAssistant = this.agent.get(HomeAssistantEntityBehavior);
     homeAssistant.callAction(
       turnOff?.(void 0, this.agent) ?? { action: "homeassistant.turn_off" },
+      // defer the on call by 
     );
   }
 
