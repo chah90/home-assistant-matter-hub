@@ -21,6 +21,11 @@ export class LevelControlServerBase extends FeaturedBase {
     const homeAssistant = await this.agent.load(HomeAssistantEntityBehavior);
     this.update(homeAssistant.entity);
     this.reactTo(homeAssistant.onChange, this.update);
+    applyPatchState(this.state, {
+      options: {
+        executeIfOff: true,
+      }
+    });
   }
 
   private update({ state }: HomeAssistantEntityInformation) {
