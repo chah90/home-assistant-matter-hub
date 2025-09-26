@@ -1,4 +1,6 @@
 import { OnOffServer } from "../../../behaviors/on-off-server.js";
+import type { Agent } from "@matter/main";
+import { BridgeDataProvider } from "../../../bridge/bridge-data-provider.js";
 
 export const LightOnOffServer = OnOffServer({
   turnOn: () => ({
@@ -8,5 +10,8 @@ export const LightOnOffServer = OnOffServer({
     action: "light.turn_off",
   }),
   isOn: (e) => e.state === "on",
-  turnOnDelayInMs: () => 250,
+  turnOnDelayInMs: (agent: Agent) => {
+    const { featureFlags } = agent.env.get(BridgeDataProvider);
+    return featureFlags.delayLightOnCommand ? 150 : 0;
+  },
 }).with(["Lighting"]);
