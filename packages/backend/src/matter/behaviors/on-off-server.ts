@@ -52,7 +52,7 @@ class OnOffServerBase extends FeaturedBase {
     homeAssistant.callAction(
       turnOn?.(void 0, this.agent) ?? { action: "homeassistant.turn_on" },
       // optionally delay the command to avoid "flickering" when using Alexa
-      turnOnDelayInMs?.(void 0, this.agent),
+      turnOnDelayInMs?.(homeAssistant.entity.state, this.agent),
     );
   }
 
