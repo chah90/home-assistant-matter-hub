@@ -10,7 +10,7 @@ export const LightOnOffServer = OnOffServer({
     action: "light.turn_off",
   }),
   isOn: (e) => e.state === "on",
-  turnOnDelayInMs: (_entity: HomeAssistantEntityState, agent: Agent) => {
+  turnOnDelayInMs: (_entity: unknown, agent: Agent) => {
     const { featureFlags } = agent.env.get(BridgeDataProvider);
     return featureFlags.delayLightOnCommand ? 150 : 0;
   },
