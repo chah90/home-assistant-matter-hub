@@ -75,7 +75,7 @@ export class ColorControlServerBase extends FeaturedBase {
       currentMireds = Math.max(Math.min(currentMireds, maxMireds), minMireds);
     }
 
-    const executeIfOff = this.state.config.executeIfOff?.(state, this.agent);
+    const executeIfOff = config.executeIfOff?.(entity.state, this.agent);
 
     applyPatchState(this.state, {
       colorMode: this.getColorModeFromFeatures(
