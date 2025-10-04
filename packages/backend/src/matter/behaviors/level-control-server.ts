@@ -41,7 +41,7 @@ export class LevelControlServerBase extends FeaturedBase {
       currentLevel = Math.min(Math.max(minLevel, currentLevel), maxLevel);
     }
 
-    const executeIfOff = this.state.config.executeIfOff?.(state, this.agent);
+    const executeIfOff = config.executeIfOff?.(state, this.agent);
 
     applyPatchState(this.state, {
       minLevel: minLevel,
