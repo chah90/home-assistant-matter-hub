@@ -23,8 +23,6 @@ export interface ColorControlConfig {
 
   setTemperature: ValueSetter<number>;
   setColor: ValueSetter<ColorInstance>;
-
-  executeIfOff?: ValueGetter<boolean>;
 }
 
 const FeaturedBase = Base.with("ColorTemperature", "HueSaturation");
@@ -36,6 +34,12 @@ export class ColorControlServerBase extends FeaturedBase {
     await super.initialize();
     const homeAssistant = await this.agent.load(HomeAssistantEntityBehavior);
     this.update(homeAssistant.entity);
+    // allow color change for a device that is currently off
+    applyPatchState(this.state, {
+      options: {
+        executeIfOff: true,
+      },
+    });
     this.reactTo(homeAssistant.onChange, this.update);
   }
 
@@ -75,8 +79,6 @@ export class ColorControlServerBase extends FeaturedBase {
       currentMireds = Math.max(Math.min(currentMireds, maxMireds), minMireds);
     }
 
-    const executeIfOff = config.executeIfOff?.(entity.state, this.agent);
-
     applyPatchState(this.state, {
       colorMode: this.getColorModeFromFeatures(
         config.getCurrentMode(entity.state, this.agent),
@@ -96,9 +98,6 @@ export class ColorControlServerBase extends FeaturedBase {
             colorTemperatureMireds: currentMireds,
           }
         : {}),
-      options: {
-        executeIfOff: executeIfOff ?? false,
-      },
     });
   }
 
